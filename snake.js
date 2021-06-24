@@ -9,7 +9,7 @@ let newSegments = 0
 
 export function update(){
     addSegments()
-    
+
     const inputDirection = getInputDirection()
     for(let i = snakeBody.length -2; i>=0;i--){
         snakeBody[i+1] = {...snakeBody[i]}
@@ -32,10 +32,19 @@ export function expandSnake(amount){
     newSegments += amount
 }
 
-export function onSnake(position){
-    return snakeBody.some(segment => {
+export function onSnake(position, {ignoreHead = false}={}){
+    return snakeBody.some((segment, index) => {
+        if(ignoreHead && index === 0) return false 
         return equalPositions(segment, position)
     })
+}
+
+export function getSnakeHead(){
+    return snakeBody[0]
+}
+
+export function snakeIntersection(){
+    return onSnake(snakeBody[0], {ignoreHead:true})
 }
 
 function equalPositions(pos1, pos2) {
